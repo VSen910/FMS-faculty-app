@@ -1,0 +1,54 @@
+<form class="w-100" [formGroup]="loginForm" (ngSubmit)="login($event)">
+  <div class="mb-3 pb-2">
+    <label for="email" class="form-label fs-7">Your email</label>
+    <input
+      type="email"
+      class="form-control rounded-3 p-3 w-100"
+      id="email"
+      name="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+      formControlName="email"
+      required
+    />
+
+    @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+    <div class="text-danger mt-1">
+      @if (loginForm.get('email')?.errors?.['required']) {
+      <small>Email is required.</small>
+      } @if (loginForm.get('email')?.errors?.['email']) {
+      <small>Enter a valid email address.</small>
+      }
+    </div>
+    }
+  </div>
+
+  <div class="mb-3 pb-4">
+    <label for="password" class="form-label fs-7">Password</label>
+    <input
+      type="password"
+      class="form-control rounded-3 p-3 w-100"
+      id="password"
+      name="password"
+      placeholder="Enter your password"
+      autocomplete="current-password"
+      formControlName="password"
+      required
+    />
+
+    @if (loginForm.get('password')?.touched &&
+    loginForm.get('password')?.invalid) {
+    <div class="text-danger mt-1">
+      @if (loginForm.get('password')?.errors?.['required']) {
+      <small>Password is required.</small>
+      }
+    </div>
+    }
+  </div>
+
+  <button type="submit" class="btn btn-login w-100 rounded-3 p-3 fw-medium">
+    Login
+  </button>
+</form>
+
+
