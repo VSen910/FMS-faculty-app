@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { LoginModel } from './login.model';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,11 @@ export class Auth {
 
   login(credentials: { email: string; password: string }): Observable<LoginModel> {
     console.log('Login attempted with', credentials);
-    return this.http.post<LoginModel>('http://127.0.0.1:8080/api/auth/login/faculty', credentials);
+    return this.http.post<LoginModel>(`${environment.apiUrl}/api/auth/login/faculty`, credentials);
   }
 
   validateToken(): Observable<boolean> {
     const token = this.cookieService.get('token');
-    return this.http.get<boolean>('http://127.0.0.1:8080/api/auth/validate', { headers: { Authorization: `Bearer ${token}` } });
+    return this.http.get<boolean>(`${environment.apiUrl}/api/auth/validate`, { headers: { Authorization: `Bearer ${token}` } });
   }
 }
