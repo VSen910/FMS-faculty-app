@@ -1,0 +1,12 @@
+nav {
+  background: linear-gradient(-35.499deg, #170D1C 0%, #501F65 75%, #982DC7 100%);
+}
+
+.btn-primary {
+  background-color: #942cc0; /* purple */
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #7a22a3; /* darker purple on hover */
+}
