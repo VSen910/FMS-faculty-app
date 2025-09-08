@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../services/auth/auth';
 
 @Component({
   selector: 'app-login-form',
@@ -10,6 +10,7 @@ import { Auth } from '../../services/auth';
 })
 export class LoginForm {
   loginForm: FormGroup;
+  showError: boolean = false;
 
   constructor(private auth: Auth, private fb: NonNullableFormBuilder) {
     this.loginForm = this.fb.group({
@@ -20,10 +21,19 @@ export class LoginForm {
 
   login(event: Event) {
     event.preventDefault();
+    this.showError = false;
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched(); // ⚡ highlight errors
       return;
     }
-    this.auth.login(this.loginForm.value);
+    this.auth.login(this.loginForm.value).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => { 
+        this.showError = true;
+        console.error('Login failed', error); 
+      }
+    });
   }
 }

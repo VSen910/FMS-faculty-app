@@ -49,6 +49,12 @@
   <button type="submit" class="btn btn-login w-100 rounded-3 p-3 fw-medium">
     Login
   </button>
+
+  @if (showError) {
+    <div class="mt-3 alert alert-danger">
+      ⚠️ Invalid credentials. Please try again.
+    </div>
+  }
 </form>
 
 
