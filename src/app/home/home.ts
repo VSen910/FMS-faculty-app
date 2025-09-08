@@ -36,4 +36,9 @@ export class Home implements OnInit {
   openChangePasswordDialog() {
     this.dialog.open(ChangePassword);
   }
+
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/login']);
+  }
 }
