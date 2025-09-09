@@ -1,75 +1,32 @@
-<h2>Questionnaire Builder</h2>
+<h2>Create Questionnaire</h2>
 
-<form [formGroup]="qForm" (ngSubmit)="save()" class="card">
-  <label>Title
-    <input formControlName="title" placeholder="e.g., Course Feedback - CS101">
-  </label>
+<form [formGroup]="qForm" (ngSubmit)="save()">
+  <label>Title:</label>
+  <input formControlName="title" />
 
-  <label>Description
-    <textarea formControlName="description" rows="2"></textarea>
-  </label>
+  <div formArrayName="questions">
+    <div *ngFor="let q of questions.controls; let i = index" [formGroupName]="i">
+      <h3>Question {{ i + 1 }}</h3>
 
-  <h3>Questions</h3>
-  <div formArrayName="questions" class="q-list">
-    <div class="q-item" *ngFor="let q of questions.controls; let i = index" [formGroupName]="i">
-      <div class="q-head">
-        <strong>Q{{ i + 1 }}</strong>
-        <button type="button" (click)="removeQuestion(i)">Remove</button>
+      <label>Text:</label>
+      <input formControlName="text" />
+
+      <label>Type:</label>
+      <select formControlName="type">
+        <option value="text">Text</option>
+        <option value="radio">Radio</option>
+        <option value="checkbox">Checkbox</option>
+      </select>
+
+      <div *ngIf="q.get('type')?.value !== 'text'">
+        <label>Options (comma separated):</label>
+        <input (input)="updateOptions(i, $any($event.target).value)" />
       </div>
 
-      <label>Prompt
-        <input formControlName="prompt" placeholder="Enter question text">
-      </label>
-
-      <label>Type
-        <select formControlName="type" (change)="setType(i, $any($event.target).value)">
-          <option value="likert">Likert (1..N)</option>
-          <option value="mcq">Multiple Choice</option>
-          <option value="text">Short Text</option>
-        </select>
-      </label>
-
-      <ng-container *ngIf="q.get('type')?.value === 'likert'">
-        <label>Max Scale (e.g., 5)
-          <input type="number" min="2" max="10" formControlName="scaleMax">
-        </label>
-      </ng-container>
-
-      <ng-container *ngIf="q.get('type')?.value === 'mcq'">
-        <label>Options (comma separated)
-          <input [value]="(q.get('options')?.value ?? []).join(', ')" 
-                 (input)="q.get('options')?.setValue(($any($event.target).value as string).split(',').map(x => x.trim()).filter(Boolean))">
-        </label>
-      </ng-container>
-
-      <label class="inline">
-        <input type="checkbox" formControlName="required"> Required
-      </label>
+      <button type="button" (click)="removeQuestion(i)">Remove</button>
     </div>
   </div>
 
-  <div class="actions">
-    <button type="button" (click)="addQuestion('likert')">+ Likert</button>
-    <button type="button" (click)="addQuestion('mcq')">+ MCQ</button>
-    <button type="button" (click)="addQuestion('text')">+ Text</button>
-    <span class="spacer"></span>
-    <button type="submit" [disabled]="qForm.invalid">Save Questionnaire</button>
-    <button type="button" (click)="resetForm()">Reset</button>
-  </div>
+  <button type="button" (click)="addQuestion()">Add Question</button>
+  <button type="submit">Save Questionnaire</button>
 </form>
-
-<section>
-  <h3>Existing Questionnaires</h3>
-  <ul class="list">
-    <li *ngFor="let q of existing; let i = index">
-      <div>
-        <strong>{{ q.title }}</strong>
-        <small> · {{ q.questions.length }} questions</small>
-      </div>
-      <div class="row-actions">
-        <button (click)="edit(i)">Edit</button>
-        <button (click)="delete(i)">Delete</button>
-      </div>
-    </li>
-  </ul>
-</section>

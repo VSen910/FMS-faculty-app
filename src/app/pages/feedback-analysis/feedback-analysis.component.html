@@ -1,59 +1,43 @@
-<h2>Feedback Analysis</h2>
+<div *ngIf="isLoading">Loading...</div>
+<div *ngIf="error">{{ error }}</div>
 
-<div class="toolbar">
-  <label>Select questionnaire:
-    <select [value]="selectedId()" (change)="select($any($event.target).value)">
-      <option *ngFor="let q of questionnaires" [value]="q.id">{{ q.title }}</option>
-    </select>
-  </label>
-</div>
+<div *ngIf="!isLoading && !error">
+  <h2>Feedback Analysis</h2>
 
-<section *ngIf="selectedQ as q; else none">
-  <p class="muted">{{ q.description }}</p>
+  <!-- Questionnaire selector -->
+  <label>Select Questionnaire:</label>
+  <select [value]="selectedQ?.id" (change)="selectQuestionById($any($event.target).value)">
+    <option *ngFor="let q of questionnaires" [value]="q.id">
+      {{ q.title }}
+    </option>
+  </select>
 
-  <div class="grid">
-    <div class="card" *ngFor="let qq of q.questions">
-      <h3>{{ qq.prompt }}</h3>
+  <div *ngIf="selectedQ">
+    <h3>{{ selectedQ?.title }}</h3>
 
-      <ng-container *ngIf="qq.type === 'likert'">
-        <div class="stat-row">
-          <span>Average</span>
-          <strong>{{ (avgLikert(qq, responsesFor(q.id)) ?? 0) | number:'1.1-2' }} / {{ qq.scaleMax }}</strong>
-        </div>
+    <!-- Questions -->
+    <div *ngFor="let qq of selectedQ.questions">
+      <h4>{{ qq.text }}</h4>
 
-        <div class="bars">
-          <div class="bar" *ngFor="let entry of (distribution(qq, responsesFor(q.id)) | keyvalue)">
-            <span class="label">{{ entry.key }}</span>
-            <div class="track">
-              <div class="fill" [style.width.%]="(entry.value / (responsesFor(q.id).length || 1)) * 100"></div>
-            </div>
-            <span class="count">{{ entry.value }}</span>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="qq.type === 'mcq'">
-        <div class="bars">
-          <div class="bar" *ngFor="let entry of (distribution(qq, responsesFor(q.id)) | keyvalue)">
-            <span class="label">{{ entry.key }}</span>
-            <div class="track">
-              <div class="fill" [style.width.%]="(entry.value / (responsesFor(q.id).length || 1)) * 100"></div>
-            </div>
-            <span class="count">{{ entry.value }}</span>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="qq.type === 'text'">
-        <ul class="answers">
-          <li *ngFor="let t of textAnswers(qq, responsesFor(q.id))">“{{ t }}”</li>
-          <li *ngIf="!textAnswers(qq, responsesFor(q.id)).length" class="muted">No text responses yet.</li>
+      <!-- Likert / Radio -->
+      <div *ngIf="qq.type === 'radio'">
+        <p>Average: {{ avgLikert(qq, responsesFor(selectedQ?.id || 0)) }}</p>
+        <ul>
+          <li *ngFor="let entry of (distribution(qq, responsesFor(selectedQ?.id || 0)) | keyvalue)">
+            {{ entry.key }}: {{ entry.value }}
+          </li>
         </ul>
-      </ng-container>
+      </div>
+
+      <!-- Text responses -->
+      <div *ngIf="qq.type === 'text'">
+        <p>Responses:</p>
+        <ul>
+          <li *ngFor="let ans of textAnswers(qq, responsesFor(selectedQ?.id || 0))">
+            {{ ans }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</section>
-
-<ng-template #none>
-  <p class="muted">No questionnaires yet. Create one in the Questionnaire tab.</p>
-</ng-template>
+</div>

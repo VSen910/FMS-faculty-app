@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { FeedbackService } from '../../services/feedback.service';
-import { Questionnaire, QuestionType } from '../../models/feedback.model';
+import { Questionnaire, Question } from '../../models/feedback.model';
 
 @Component({
   selector: 'app-questionnaire',
@@ -12,57 +12,82 @@ import { Questionnaire, QuestionType } from '../../models/feedback.model';
   styleUrls: ['./questionnaire.component.css']
 })
 export class QuestionnaireComponent implements OnInit {
-  questionnaireForm!: FormGroup; // definite assignment
-  questionTypes = Object.values(QuestionType);
+  qForm!: FormGroup;
+  existing: Questionnaire[] = [];
 
   constructor(private fb: FormBuilder, private feedbackService: FeedbackService) {}
 
   ngOnInit(): void {
-    // Initialize form here, after fb is available
-    this.questionnaireForm = this.fb.group({
+    this.qForm = this.fb.group({
       title: ['', Validators.required],
       questions: this.fb.array([])
     });
+    this.loadExisting();
   }
 
   get questions(): FormArray {
-    return this.questionnaireForm.get('questions') as FormArray;
+    return this.qForm.get('questions') as FormArray;
   }
 
-  addQuestion(): void {
-    const questionGroup = this.fb.group({
-      text: ['', Validators.required],
-      type: [QuestionType.TEXT, Validators.required],
-      options: this.fb.array([])
-    });
-    this.questions.push(questionGroup);
+  addQuestion(type: string = 'text'): void {
+    this.questions.push(
+      this.fb.group({
+        text: ['', Validators.required],
+        type: [type, Validators.required],
+        options: ['']
+      })
+    );
   }
 
-  addOption(questionIndex: number): void {
-    const options = this.questions.at(questionIndex).get('options') as FormArray;
-    options.push(this.fb.control('', Validators.required));
+  updateOptions(i: number, raw: string) {
+    const cleaned = raw.split(',').map(x => x.trim()).filter(Boolean);
+    this.questions.at(i).get('options')?.setValue(cleaned);
   }
 
-  removeQuestion(index: number): void {
-    this.questions.removeAt(index);
+  removeQuestion(i: number) {
+    this.questions.removeAt(i);
   }
 
-  removeOption(questionIndex: number, optionIndex: number): void {
-    const options = this.questions.at(questionIndex).get('options') as FormArray;
-    options.removeAt(optionIndex);
-  }
+  save(): void {
+    if (this.qForm.invalid) return;
 
-  submit(): void {
-    if (this.questionnaireForm.invalid) return;
-
-    const questionnaire: Questionnaire = this.questionnaireForm.value;
+    const questionnaire: Questionnaire = this.qForm.value;
     this.feedbackService.createQuestionnaire(questionnaire).subscribe({
       next: () => {
-        console.log('Questionnaire saved successfully!');
-        this.questionnaireForm.reset();
-        this.questions.clear();
+        this.resetForm();
+        this.loadExisting();
       },
       error: (err) => console.error('Error saving questionnaire', err)
     });
+  }
+
+  resetForm(): void {
+    this.qForm.reset();
+    this.questions.clear();
+  }
+
+  loadExisting(): void {
+    this.feedbackService.getQuestionnaires().subscribe({
+      next: (data: Questionnaire[]) => this.existing = data
+    });
+  }
+
+  edit(index: number): void {
+    const q = this.existing[index];
+    this.qForm.patchValue({ title: q.title });
+    this.questions.clear();
+    q.questions.forEach((ques: Question) => {
+      this.questions.push(
+        this.fb.group({
+          text: [ques.text, Validators.required],
+          type: [ques.type || 'text', Validators.required],
+          options: [(ques as any).options || '']
+        })
+      );
+    });
+  }
+
+  delete(index: number): void {
+    this.existing.splice(index, 1);
   }
 }

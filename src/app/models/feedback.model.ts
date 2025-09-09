@@ -1,24 +1,28 @@
-export type QuestionType = 'mcq' | 'likert' | 'text';
+export interface Questionnaire {
+  id: number;
+  title: string;
+  questions: Question[];
+}
 
 export interface Question {
   id: string;
-  text?: string;           // 👈 make optional
-  prompt?: string;         // 👈 new field
-  type?: QuestionType;
-  options?: string[] | null;
-  scaleMax?: number | null;
-  required?: boolean;
+  text: string;
+  type: string;
+  options?: string[];
+}
+
+export enum QuestionType {
+  TEXT = 'text',
+  RADIO = 'radio',
+  CHECKBOX = 'checkbox'
 }
 
 export interface FeedbackResponse {
-  id: string;
-  answers: { questionId: string; value: number }[];
+  questionnaireId: number;
+  answers: Answer[];
 }
 
-export interface Questionnaire {
-  id: string;
-  title: string;
-  description?: string;
-  createdAt?: string;
-  questions: Question[];
+export interface Answer {
+  questionId: string;
+  response: string | string[];
 }
