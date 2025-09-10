@@ -26,4 +26,11 @@ export class Auth {
     this.cookieService.delete('fullName');
     console.log('User logged out, cookies cleared.');
   }
+
+  changePassword(passwords: { oldPassword: string; newPassword: string }): Observable<{ message: string, status: string }> {
+    const token = this.cookieService.get('token');
+    return this.http.post<{ message: string, status: string }>(`${environment.apiUrl}/api/auth/change-password`, passwords, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
 }
