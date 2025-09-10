@@ -1,7 +1,7 @@
 <app-header />
 <div class="home-container p-4">
   <div class="head-row d-flex justify-content-between align-items-center">
-    <h2 class="maven-bold">Hey Vineet</h2>
+    <h2 class="maven-bold">Hey {{name}}</h2>
     <div class="actions d-flex gap-3">
       <p class="fw-bold" (click)="openChangePasswordDialog()">Change password</p>
       <p class="fw-bold" (click)="logout()">Sign out</p>
@@ -9,7 +9,16 @@
   </div>
   <p class="mt-4">Feedbacks created</p>
   <div class="pending-cards d-flex flex-wrap gap-3 mt-4">
-    <app-form-card
+    @for (feedback of feedbacks; track $index) {
+      <app-form-card
+        [id]="feedback.id"
+        [title]="feedback.title"
+        [description]="feedback.description"
+        [creator]="feedback.createdBy"
+      ></app-form-card>
+    }
+
+    <!-- <app-form-card
       title="Feedback for UI/UX Design"
       description="Please provide your feedback on the recent UI/UX design changes."
       creator="Alice Johnson"
@@ -20,6 +29,6 @@
       description="Share your thoughts on the recent project and areas of improvement."
       creator="Bob Smith"
       route="/form/2"
-    ></app-form-card>
+    ></app-form-card> -->
   </div>
 </div>

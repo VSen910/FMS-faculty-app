@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Auth } from '../../services/auth/auth';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -12,7 +14,7 @@ export class LoginForm {
   loginForm: FormGroup;
   showError: boolean = false;
 
-  constructor(private auth: Auth, private fb: NonNullableFormBuilder) {
+  constructor(private auth: Auth, private fb: NonNullableFormBuilder, private cookieService: CookieService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
@@ -28,7 +30,9 @@ export class LoginForm {
     }
     this.auth.login(this.loginForm.value).subscribe({
       next: (response) => {
-        console.log(response);
+        this.cookieService.set('token', response.token);
+        this.cookieService.set('fullName', response.fullName);
+        this.router.navigate(['/home']);
       },
       error: (error) => { 
         this.showError = true;

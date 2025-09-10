@@ -7,13 +7,13 @@ import { Component, Input } from '@angular/core';
   styleUrl: './form-card.css'
 })
 export class FormCard {
+  @Input() id!: number;
   @Input() title!: string;
   @Input() description!: string;
   @Input() creator!: string;
-  @Input() route!: string;
 
   goToDetails() {
-    // Logic to navigate to form details page
     console.log('Navigating to form details...');
+    console.log('Form ID:', this.id);
   }
 }
