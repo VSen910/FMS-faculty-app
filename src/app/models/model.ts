@@ -7,7 +7,7 @@ export interface Questionnaire {
 export interface Question {
   id: string;
   text: string;
-  type: string;
+  type: QuestionType;
   options?: string[];
 }
 

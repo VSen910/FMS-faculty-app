@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
-import { Questionnaire, FeedbackResponse } from '../models/feedback.model';
+import { Questionnaire, FeedbackResponse } from '../models/model';
 
 @Injectable({
   providedIn: 'root'

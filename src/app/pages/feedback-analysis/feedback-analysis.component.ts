@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Needed for *ngIf / *ngFor
 import { FeedbackService } from '../../services/feedback.service';
-import { Questionnaire, Question, FeedbackResponse } from '../../models/feedback.model';
+import { Questionnaire, Question, FeedbackResponse } from '../../models/model';
 
 @Component({
   selector: 'app-feedback-analysis',

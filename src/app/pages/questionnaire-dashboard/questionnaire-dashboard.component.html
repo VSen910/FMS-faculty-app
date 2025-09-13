@@ -1,0 +1,46 @@
+<div class="faculty-dashboard">
+  <header class="header">
+    <h1 class="highlighted-title">EduPulse</h1>
+    <h2 class="highlighted-subtitle">Faculty Questionnaire - DevOps Aug-Dec 24</h2>
+    <p>End term questionnaire for Aug-Dec 24</p>
+  </header>
+
+  <div class="summary-cards">
+    <div class="card">
+      <h3>Total Questions</h3>
+      <p class="rating">{{ totalQuestions }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Total Responses</h3>
+      <p class="response">{{ totalResponses }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Response Rate</h3>
+      <p>{{ responseRate }}%</p>
+    </div>
+  </div>
+
+  <section class="charts">
+    <div class="chart-container" *ngFor="let q of questions">
+      <div class="question-block">
+        <h4>{{ q.question }}</h4>
+        <canvas [id]="q.barChartId"></canvas>
+      </div>
+      <div class="question-block">
+        <h4>{{ q.question }} - Sentiment</h4>
+        <canvas [id]="q.pieChartId"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="additional-comments">
+    <h3>Any Additional Comments</h3>
+    <p>
+      <span class="positive">😊 {{ additionalPositivePercent }}%</span> |
+      <span class="negative">😞 {{ additionalNegativePercent }}%</span>
+    </p>
+    <a href="#">View All Answers</a>
+  </section>
+</div>

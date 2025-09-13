@@ -1,0 +1,72 @@
+<div class="faculty-dashboard">
+  <header class="header">
+    <h1>EduPulse</h1>
+    <h2>Faculty Feedback - DevOps Aug-Dec 24</h2>
+    <p>End term feedback for Aug-Dec 24</p>
+  </header>
+
+  <div class="summary-cards">
+    <div class="card">
+      <h3>Average rating</h3>
+      <p class="rating">4.5 / 5</p>
+    </div>
+
+    <div class="card">
+      <h3>Response rate</h3>
+      <p class="response">88% (44/50)</p>
+    </div>
+
+    <div class="card">
+      <h3>Sentiments</h3>
+      <p><span class="positive">😊 80%</span> | <span class="negative">😞 20%</span></p>
+    </div>
+  </div>
+
+  <section class="charts">
+    <div class="chart-container">
+      <div class="chart">
+        <h4>Ratings Distribution</h4>
+        <canvas id="ratingsBarChart"></canvas>
+      </div>
+
+      <div class="chart">
+        <h4>Overall Sentiment</h4>
+        <canvas id="overallSentimentPieChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <h3>Question by Question Analysis</h3>
+
+  <section class="question-analysis">
+    <div class="chart-container">
+      <div class="question-block">
+        <h4>Faculty knowledge in the subject</h4>
+        <canvas id="knowledgeBarChart"></canvas>
+      </div>
+      
+      <div class="question-block">
+        <h4>Faculty knowledge in the subject - Sentiment</h4>
+        <canvas id="knowledgePieChart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="question-block">
+        <h4>Teaching methodology rating</h4>
+        <canvas id="methodologyBarChart"></canvas>
+      </div>
+
+      <div class="question-block">
+        <h4>Teaching methodology - Sentiment</h4>
+        <canvas id="methodologyPieChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="additional-comments">
+    <h3>Any additional comments</h3>
+    <p><span class="positive">😊 75%</span> | <span class="negative">😞 25%</span></p>
+    <a href="#">View all answers</a>
+  </section>
+</div>

@@ -1,32 +1,51 @@
-<h2>Create Questionnaire</h2>
+<div class="container">
+  <h1 class="title">Questionnaire</h1>
 
-<form [formGroup]="qForm" (ngSubmit)="save()">
-  <label>Title:</label>
-  <input formControlName="title" />
-
-  <div formArrayName="questions">
-    <div *ngFor="let q of questions.controls; let i = index" [formGroupName]="i">
-      <h3>Question {{ i + 1 }}</h3>
-
-      <label>Text:</label>
-      <input formControlName="text" />
-
-      <label>Type:</label>
-      <select formControlName="type">
-        <option value="text">Text</option>
-        <option value="radio">Radio</option>
-        <option value="checkbox">Checkbox</option>
-      </select>
-
-      <div *ngIf="q.get('type')?.value !== 'text'">
-        <label>Options (comma separated):</label>
-        <input (input)="updateOptions(i, $any($event.target).value)" />
-      </div>
-
-      <button type="button" (click)="removeQuestion(i)">Remove</button>
+  <form [formGroup]="qForm" (ngSubmit)="save()">
+    <div class="form-group title-section">
+      <label>Title:</label>
+      <input type="text" formControlName="title" placeholder="Enter questionnaire title" />
     </div>
-  </div>
 
-  <button type="button" (click)="addQuestion()">Add Question</button>
-  <button type="submit">Save Questionnaire</button>
-</form>
+    <div formArrayName="questions">
+      <div *ngFor="let q of questions.controls; let i = index" [formGroupName]="i" class="question-block">
+        
+        <label>Question {{ i + 1 }}:</label>
+        <input type="text" formControlName="text" placeholder="Enter question text" />
+
+        <label>Type:</label>
+        <select formControlName="type">
+          <option *ngFor="let type of questionTypes" [value]="type">{{ type }}</option>
+        </select>
+
+        <!-- Options for RADIO -->
+        <div *ngIf="questions.at(i).get('type')?.value === 'radio'">
+          <div formArrayName="options">
+            <div *ngFor="let opt of getOptions(i).controls; let j = index">
+              <input [formControlName]="j" placeholder="Option {{ j + 1 }}" />
+              <button type="button" (click)="removeOption(i, j)">Remove</button>
+            </div>
+          </div>
+          <button type="button" (click)="addOption(i)">+ Add Option</button>
+        </div>
+
+        <!-- Options for CHECKBOX -->
+        <div *ngIf="questions.at(i).get('type')?.value === 'checkbox'">
+          <div formArrayName="options">
+            <div *ngFor="let opt of getOptions(i).controls; let j = index">
+              <input [formControlName]="j" placeholder="Option {{ j + 1 }}" />
+              <button type="button" (click)="removeOption(i, j)">Remove</button>
+            </div>
+          </div>
+          <button type="button" (click)="addOption(i)">+ Add Option</button>
+        </div>
+
+        <button type="button" class="remove-btn" (click)="removeQuestion(i)">Remove Question</button>
+      </div>
+    </div>
+
+    <button type="button" class="add-btn" (click)="addQuestion()">+ Add Question</button>
+    <br /><br />
+    <button type="submit" class="save-btn">Save Questionnaire</button>
+  </form>
+</div>

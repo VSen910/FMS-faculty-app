@@ -1,43 +1,55 @@
-<div *ngIf="isLoading">Loading...</div>
-<div *ngIf="error">{{ error }}</div>
+<div class="feedback-container">
+  <h2 class="title">📋 Faculty Feedback</h2>
+  <p class="subtitle">Please provide your feedback about this course</p>
 
-<div *ngIf="!isLoading && !error">
-  <h2>Feedback Analysis</h2>
-
-  <!-- Questionnaire selector -->
-  <label>Select Questionnaire:</label>
-  <select [value]="selectedQ?.id" (change)="selectQuestionById($any($event.target).value)">
-    <option *ngFor="let q of questionnaires" [value]="q.id">
-      {{ q.title }}
-    </option>
-  </select>
-
-  <div *ngIf="selectedQ">
-    <h3>{{ selectedQ?.title }}</h3>
-
-    <!-- Questions -->
-    <div *ngFor="let qq of selectedQ.questions">
-      <h4>{{ qq.text }}</h4>
-
-      <!-- Likert / Radio -->
-      <div *ngIf="qq.type === 'radio'">
-        <p>Average: {{ avgLikert(qq, responsesFor(selectedQ?.id || 0)) }}</p>
-        <ul>
-          <li *ngFor="let entry of (distribution(qq, responsesFor(selectedQ?.id || 0)) | keyvalue)">
-            {{ entry.key }}: {{ entry.value }}
-          </li>
-        </ul>
-      </div>
-
-      <!-- Text responses -->
-      <div *ngIf="qq.type === 'text'">
-        <p>Responses:</p>
-        <ul>
-          <li *ngFor="let ans of textAnswers(qq, responsesFor(selectedQ?.id || 0))">
-            {{ ans }}
-          </li>
-        </ul>
-      </div>
+  <div class="question-card">
+    <label>1. How satisfied are you with the syllabus coverage?</label>
+    <div class="stars">
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
     </div>
   </div>
+
+  <div class="question-card">
+    <label>2. How would you rate the students’ engagement during lectures?</label>
+    <div class="stars">
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <label>3. How effective were the available teaching resources?</label>
+    <div class="stars">
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <label>4. How would you rate the overall teaching experience?</label>
+    <div class="stars">
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <label>5. Suggestions for improving this course?</label>
+    <textarea placeholder="Write your suggestions here..."></textarea>
+  </div>
+
+  <button class="submit-btn">Submit Feedback</button>
 </div>
