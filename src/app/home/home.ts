@@ -7,7 +7,7 @@ import { Auth } from '../services/auth/auth';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Faculty } from '../services/faculty/faculty';
-import { Feedback } from '../services/faculty/feedback.model';
+import { Feedback } from '../models/feedback.model';
 
 @Component({
   selector: 'app-home',

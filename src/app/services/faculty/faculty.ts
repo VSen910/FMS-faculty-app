@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../environments/environments';
 import { Observable } from 'rxjs';
-import { Feedback } from './feedback.model';
+import { Feedback } from '../../models/feedback.model';
 import { CreateFormRequest } from '../../models/createFormRequest.model';
 
 @Injectable({
