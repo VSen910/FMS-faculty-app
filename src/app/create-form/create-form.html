@@ -1,0 +1,109 @@
+<div class="container-fluid vh-100">
+  <!-- sidebar -->
+  <div class="row h-100">
+    <div class="sidebar col-4 text-white d-flex flex-column p-4">
+      <h2 class="maven-bold mb-5">EduPulse</h2>
+
+      <form
+        class="w-100 d-flex flex-fill flex-column justify-content-center align-content-center"
+        [formGroup]="feedbackForm"
+        (ngSubmit)="submit($event)"
+      >
+        <div class="mb-5">
+          <div class="mb-4">
+            <label for="title" class="mb-2 fs-7">Title</label>
+            <input
+              id="title"
+              type="text"
+              name="title"
+              class="form-control mb-3 p-3 rounded-3 w-100"
+              placeholder="Enter questionnaire title"
+              formControlName="title"
+              required
+            />
+            @if (feedbackForm.get('title')?.touched && feedbackForm.get('title')?.invalid) {
+              <div class="text-danger mt-1">
+                <small>Invalid title</small>
+              </div>
+            }
+          </div>
+
+          <div>
+            <label for="description" class="mb-2 fs-7">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              class="form-control mb-3 p-3 rounded-3 w-100"
+              placeholder="Enter questionnaire description"
+              formControlName="description"
+              required
+            ></textarea>
+            @if (feedbackForm.get('description')?.touched && feedbackForm.get('description')?.invalid) {
+              <div class="text-danger mt-1">
+                <small>Invalid description</small>
+              </div>
+            }
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-create w-100 rounded-3 p-3 fw-medium"
+        >
+          Create questionnaire
+        </button>
+      </form>
+    </div>
+
+    <!-- questions -->
+    <div class="col-8 bg-light p-4 overflow-auto" [formGroup]="feedbackForm">
+      <div class="d-flex justify-content-end mb-3">
+        <small>Total questions: {{ questions.length }}</small>
+      </div>
+
+      @for (q of questionGroups; let i = $index; track i) {
+      <div class="card p-3 mb-4" [formGroup]="q">
+        <!-- Editable borderless input -->
+        <input
+          type="text"
+          formControlName="prompt"
+          class="form-control-plaintext fs-6 mb-2"
+          placeholder="Enter question prompt..."
+        />
+        @if (q.get('prompt')?.touched && q.get('prompt')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Invalid question</small>
+          </div>
+        }
+
+        @if (q.get('type')?.value === 'RATING') {
+        <div class="stars">
+          @for (s of [].constructor(q.get('maxRating')?.value); track s) {
+          <span class="star fs-1 m-2"> ★ </span>
+          }
+        </div>
+        } @if (q.get('type')?.value === 'TEXT') {
+        <textarea rows="3" class="form-control" disabled></textarea>
+        }
+      </div>
+      }
+
+      <div class="d-flex gap-2 justify-content-center">
+        <button
+          type="button"
+          class="btn btn-outline-purple"
+          (click)="addRatingQuestion()"
+        >
+          + Rating
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-purple"
+          (click)="addTextQuestion()"
+        >
+          + Text
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+.sidebar {
+  background: linear-gradient(-35.499deg, #170D1C 0%, #501F65 75%, #982DC7 100%);
+}
+
+.btn-create {
+  background-color: #942cc0; /* purple */
+  color: #fff;
+}
+
+.btn-create:hover {
+  background-color: #7a22a3; /* darker purple on hover */
+}
+
+.star {
+  /* font-size: 30px; */
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.2s;
+}
