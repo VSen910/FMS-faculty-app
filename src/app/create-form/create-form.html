@@ -1,7 +1,7 @@
 <div class="container-fluid vh-100">
-  <!-- sidebar -->
   <div class="row h-100">
-    <div class="sidebar col-4 text-white d-flex flex-column p-4">
+  <!-- sidebar -->
+    <div class="sidebar col-4 text-white d-flex flex-column p-4 position-fixed top-0 start-0 vh-100">
       <h2 class="maven-bold mb-5">EduPulse</h2>
 
       <form
@@ -56,7 +56,7 @@
     </div>
 
     <!-- questions -->
-    <div class="col-8 bg-light p-4 overflow-auto" [formGroup]="feedbackForm">
+    <div class="col-8 offset-4 p-4 overflow-auto vh-100" [formGroup]="feedbackForm">
       <div class="d-flex justify-content-end mb-3">
         <small>Total questions: {{ questions.length }}</small>
       </div>

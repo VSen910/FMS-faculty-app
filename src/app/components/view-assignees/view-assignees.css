@@ -1,0 +1,12 @@
+.modal-dialog {
+  background-color: #f5f5f5;
+}
+
+table.table td,
+table.table th {
+  padding: 1rem 0.75rem; /* increase vertical spacing */
+}
+
+.modal-title {
+  color: #942cc0;
+}

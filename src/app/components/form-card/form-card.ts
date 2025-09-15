@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Feedback } from '../../models/feedback.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-card',
@@ -7,13 +9,13 @@ import { Component, Input } from '@angular/core';
   styleUrl: './form-card.css'
 })
 export class FormCard {
-  @Input() id!: number;
-  @Input() title!: string;
-  @Input() description!: string;
-  @Input() creator!: string;
+  @Input() feedback!: Feedback;
+
+  constructor(private router: Router) {}
 
   goToDetails() {
     console.log('Navigating to form details...');
-    console.log('Form ID:', this.id);
+    console.log('Form ID:', this.feedback.id);
+    this.router.navigate(['/analytics', this.feedback.id]);
   }
 }

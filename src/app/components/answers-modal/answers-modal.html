@@ -1,0 +1,15 @@
+<div class="modal-card p-4 rounded-2 overflow-auto">
+  <h3 class="title maven-bold">Answers</h3>
+
+  <div class="answers-list">
+    @if (data.answers.length) { 
+      @for (ans of data.answers; track $index) {
+        <div class="answer-box">
+          <strong>{{ ans }}</strong>
+        </div>
+        } 
+    } @else {
+      <div class="text-muted fst-italic">No answers available.</div>
+    }
+  </div>
+</div>

@@ -1,0 +1,122 @@
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+    <div
+      class="sidebar col-3 text-white d-flex flex-column p-4 position-fixed top-0 start-0 vh-100"
+    >
+      <h2 class="maven-bold mb-5">EduPulse</h2>
+      <form
+        class="w-100 d-flex flex-fill flex-column justify-content-center align-content-center"
+        (ngSubmit)="addAssignees()"
+      >
+        <div>
+          <label for="assignees" class="mb-2 fs-7">Assignees</label>
+          <textarea
+            id="assignees"
+            name="assignees"
+            rows="4"
+            class="form-control mb-3 p-3 rounded-3 w-100"
+            placeholder="example1@gmail.com, example2@gmail.com, ..."
+            [(ngModel)]="newAssigneeEmails"
+            required
+          ></textarea>
+          <!-- @if (feedbackForm.get('assignees')?.touched &&
+          feedbackForm.get('assignees')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Invalid assignees</small>
+          </div>
+          } -->
+          <button
+            type="submit"
+            class="btn btn-assignees w-100 rounded-3 p-3 fw-medium"
+          >
+            Add assignees
+          </button>
+        </div>
+      </form>
+      <button class="btn btn-link text-white text-decoration-none p-3" (click)="viewAssignees()">View assignees</button>
+    </div>
+
+    @if (!analytics) {
+    <div class="col-8 offset-3 p-4 overflow-auto vh-100 text-black">
+      <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    } @else {
+    <div class="col-9 offset-3 p-4 overflow-auto vh-100">
+      <h2 class="maven-bold text-black mb-4">{{ analytics.title }}</h2>
+      <div class="d-flex justify-content-between mb-1">
+        <div class="container rounded-3 p-4 m-4">
+          <p class="fw-bold">Average rating</p>
+          <h3 class="maven-bold mt-2 fs-1">
+            {{ analytics.overallAvgRating
+            }}<span><small class="fs-5">/5</small></span>
+          </h3>
+        </div>
+        <div class="container rounded-3 p-4 m-4">
+          <p class="fw-bold">No. of responses</p>
+          <h3 class="maven-bold mt-2 fs-1">
+            {{ analytics.submittedCount
+            }}<span
+              ><small class="fs-5">/{{ analytics.assignedCount }}</small></span
+            >
+          </h3>
+        </div>
+        <div class="container rounded-3 p-4 m-4">
+          <p class="fw-bold">Response rate</p>
+          <h3 class="maven-bold mt-2 fs-1">
+            {{ analytics.submittedPercentage
+            }}<span><small class="fs-5">%</small></span>
+          </h3>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mb-5">
+        <div
+          class="container rounded-3 p-4 m-4 d-flex justify-content-center align-items-center"
+        >
+          <ag-charts class="h-100 w-100" [options]="avgBarOptions"></ag-charts>
+        </div>
+        <div
+          class="container rounded-3 p-4 m-4 d-flex justify-content-center align-items-center"
+        >
+          <ag-charts class="h-100 w-100" [options]="avgPieOptions"></ag-charts>
+        </div>
+      </div>
+
+      <p class="fw-medium mb-3">Question by question analytics</p>
+
+      @for (q of options; track q) {
+      <div class="container rounded-3 p-4 mb-4">
+        <p>{{ q.prompt }}</p>
+        <div class="row">
+          <div
+            class="col-md-6 d-flex justify-content-center align-items-center"
+          >
+            <ag-charts class="w-100" [options]="q.barOptions"></ag-charts>
+          </div>
+          <div
+            class="col-md-6 d-flex justify-content-center align-items-center"
+          >
+            <ag-charts class="w-100" [options]="q.pieOptions"></ag-charts>
+          </div>
+        </div>
+      </div>
+      } @for (q of textQuestions; track q) {
+      <div
+        class="container rounded-3 p-4 mb-4 d-flex justify-content-between align-items-center"
+      >
+        <p class="question-text">{{ q.prompt }}</p>
+        <p class="txt-btn fw-bold" (click)="viewAnswers(q.questionId)">View answers</p>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

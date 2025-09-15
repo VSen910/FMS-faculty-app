@@ -1,0 +1,35 @@
+.sidebar {
+  background: linear-gradient(-35.499deg, #170D1C 0%, #501F65 75%, #982DC7 100%);
+}
+
+.btn-assignees {
+  background-color: #942cc0; /* purple */
+  color: #fff;
+}
+
+.btn-assignees:hover {
+  background-color: #7a22a3; /* darker purple on hover */
+}
+
+.container {
+  background-color: white;
+}
+
+h3 {
+  color: #942cc0;
+}
+
+.txt-btn {
+  color: #942cc0;
+  cursor: pointer;
+}
+
+ag-charts {
+  max-width: 100%;
+}
+
+.question-text {
+  max-width: 70%;        /* cap width */
+  white-space: normal;   /* allow wrapping */
+  word-break: break-word; /* handle long words/emails */
+}
