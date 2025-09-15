@@ -58,15 +58,47 @@ export class FeedbackAnalytics implements OnInit {
 
   createAvgOptions() {
     const data = Object.entries(this.analytics.overallRatingCounts).map(
-      ([rating, count]) => ({ rating: Number(rating), count })
+      ([rating, count]) => ({ rating: `${rating} ★`, count })
     );
     this.avgBarOptions = {
+      title: {
+        enabled: true,
+        text: 'Overall ratings',
+      },
       data,
       series: [{ type: 'bar', xKey: 'rating', yKey: 'count' }],
     };
     this.avgPieOptions = {
+      title: {
+        enabled: true,
+        text: 'Overall ratings %',
+      },
       data,
-      series: [{ type: 'pie', legendItemKey: 'rating', angleKey: 'count' }],
+      series: [
+        {
+          type: 'pie',
+          legendItemKey: 'rating',
+          angleKey: 'count',
+          tooltip: {
+            enabled: true,
+            renderer: (params) => {
+              const { datum, angleKey } = params;
+              const value = datum[angleKey];
+              const percentage = (
+                (value / this.analytics.overallRatingCount) *
+                100
+              ).toFixed(1);
+              return {
+                title: datum.rating,
+                data: [
+                  { label: 'Count', value: value },
+                  { label: 'Percentage', value: `${percentage}%` },
+                ],
+              };
+            },
+          },
+        },
+      ],
     };
   }
 
@@ -77,19 +109,51 @@ export class FeedbackAnalytics implements OnInit {
     this.options = ratingQuestions.map((q) => {
       const data = Object.entries(q.ratingCounts ?? {}).map(
         ([rating, count]) => ({
-          rating: Number(rating),
+          rating: `${rating} ★`,
           count,
         })
       );
       return {
         prompt: q.prompt,
         barOptions: {
+          title: {
+            enabled: true,
+            text: 'Ratings',
+          },
           data,
           series: [{ type: 'bar', xKey: 'rating', yKey: 'count' }],
         },
         pieOptions: {
+          title: {
+            enabled: true,
+            text: 'Ratings %',
+          },
           data,
-          series: [{ type: 'pie', legendItemKey: 'rating', angleKey: 'count' }],
+          series: [
+            {
+              type: 'pie',
+              legendItemKey: 'rating',
+              angleKey: 'count',
+              tooltip: {
+                enabled: true,
+                renderer: (params) => {
+                  const { datum, angleKey } = params;
+                  const value = datum[angleKey];
+                  const percentage = (
+                    (value / q.responseCount) *
+                    100
+                  ).toFixed(1);
+                  return {
+                    title: datum.rating,
+                    data: [
+                      { label: 'Count', value: value },
+                      { label: 'Percentage', value: `${percentage}%` },
+                    ],
+                  };
+                },
+              },
+            },
+          ],
         },
       };
     });
