@@ -26,7 +26,13 @@ export class CreateForm {
     this.feedbackForm = this.fb.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      questions: this.fb.array([]),
+      questions: this.fb.array([
+        this.fb.group({
+          prompt: ['New rating question', [Validators.required]],
+          type: ['RATING'],
+          maxRating: [5],
+        }),
+      ]),
     });
   }
 

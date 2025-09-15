@@ -78,7 +78,7 @@
 
         @if (q.get('type')?.value === 'RATING') {
         <div class="stars">
-          @for (s of [].constructor(q.get('maxRating')?.value); track s) {
+          @for (s of [].constructor(q.get('maxRating')?.value); let i=$index; track i) {
           <span class="star fs-1 m-2"> ★ </span>
           }
         </div>
