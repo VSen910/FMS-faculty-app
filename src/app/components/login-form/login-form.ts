@@ -30,7 +30,7 @@ export class LoginForm {
     }
     this.auth.login(this.loginForm.value).subscribe({
       next: (response) => {
-        this.cookieService.set('token', response.token);
+        this.cookieService.set('facultyToken', response.token);
         this.cookieService.set('fullName', response.fullName);
         this.router.navigate(['/home']);
       },
