@@ -15,7 +15,7 @@ export class Faculty {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   private get token(): string {
-    return this.cookieService.get('studentToken');
+    return this.cookieService.get('facultyToken');
   }
 
   getAllFeedbacks(): Observable<Feedback[]> {
