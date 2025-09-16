@@ -4,7 +4,7 @@ import {
   QuestionAnalytics,
 } from '../models/analyticsResponse.model';
 import { Faculty } from '../services/faculty/faculty';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AgCharts } from 'ag-charts-angular';
 import { AgChartOptions } from 'ag-charts-community';
 import { QuestionChart } from '../models/questionChart.model';
@@ -13,6 +13,7 @@ import { AnswersModal } from '../components/answers-modal/answers-modal';
 import { Assignee } from '../models/assignee.model';
 import { ViewAssignees } from '../components/view-assignees/view-assignees';
 import { FormsModule } from '@angular/forms';
+import { Auth } from '../services/auth/auth';
 
 @Component({
   selector: 'app-feedback-analytics',
@@ -33,12 +34,25 @@ export class FeedbackAnalytics implements OnInit {
   constructor(
     private faculty: Faculty,
     private route: ActivatedRoute,
-    private dialog: Dialog
+    private dialog: Dialog,
+    private auth: Auth,
+    private router: Router
   ) {
     this.formId = Number(this.route.snapshot.paramMap.get('id'));
   }
 
   ngOnInit(): void {
+    this.auth.validateToken().subscribe({
+      next: (isValid) => {
+        if (!isValid) {
+          this.router.navigate(['/login']);
+        }
+      },
+      error: (error) => {
+        console.error('Token validation failed', error);
+        this.router.navigate(['/login']);
+      },
+    });
     this.faculty.getAnalytics(this.formId).subscribe({
       next: (response) => {
         if (response.status === 'success' && response.analytics) {
