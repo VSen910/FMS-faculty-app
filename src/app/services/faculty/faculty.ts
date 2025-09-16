@@ -12,10 +12,10 @@ import { AssigneesResponse } from '../../models/assignee.model';
   providedIn: 'root',
 })
 export class Faculty {
-  token: string;
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.token = this.cookieService.get('facultyToken');
+  private get token(): string {
+    return this.cookieService.get('studentToken');
   }
 
   getAllFeedbacks(): Observable<Feedback[]> {
